@@ -8,20 +8,18 @@ import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class CartHasProductRepositoryImpl implements CartHasProductRepository, PanacheRepository<CartHasProductsEntity> {
-    @Inject
-    CartRepositoryImpl cartRepository;
 
-    @Inject
-    ProductRepositoryImpl productRepository;
+    @Inject CartRepositoryImpl cartRepository;
+    @Inject ProductRepositoryImpl productRepository;
+
     @Override
     public void addProductToCart(int cartId, int productId, int quantity) {
-        System.out.println("Adding product with ID " + productId + " to cart with ID " + cartId + " with quantity " + quantity);
         CartHasProductsEntity cartHasProduct = new CartHasProductsEntity();
-        cartHasProduct.setCart(cartRepository.getCartById(cartId));
+        cartHasProduct.setCart(cartRepository.findCartById(cartId));
         cartHasProduct.setProduct(productRepository.findById(productId));
         cartHasProduct.setQuantity(quantity);
-        persist(cartHasProduct);
-        System.out.println("Product added to cart successfully.");
+
+        cartHasProduct.persist();
     }
 
     @Override

@@ -20,12 +20,6 @@ public class UserEntity extends PanacheEntityBase {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
     @Column(name="firebase_id")
     private String firebaseId;
 }

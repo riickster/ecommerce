@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
     }
 
     @Override
-    public User getUserByFirebaseId(String firebaseId) {
+    public User findByFirebaseId(String firebaseId) {
         UserEntity user = find("firebaseId", firebaseId).firstResult();
         if (user == null) {
             return null;
@@ -28,14 +28,14 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
         return UserMapper.toDomain(user);
     }
 
+    public UserEntity findEntityByFirebaseId(String firebaseId){
+        return find("firebaseId", firebaseId).firstResult();
+    }
+
     @Override
     public User registerUser(User user) {
         UserEntity userEntity = UserMapper.toEntity(user);
         userEntity.persist();
         return UserMapper.toDomain(userEntity);
-    }
-
-    public UserEntity getUserEntityByFirebaseId(String firebaseId) {
-        return find("firebaseId", firebaseId).firstResult();
     }
 }

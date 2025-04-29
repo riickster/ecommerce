@@ -12,12 +12,10 @@ import jakarta.transaction.Transactional;
 public class ClearCartUseCase {
 
     @Inject CartService cartService;
-    @Inject UserRepository userRepository;
 
     @Transactional
     public void execute(String firebaseId) {
-        User user = userRepository.getUserByFirebaseId(firebaseId);
-        Cart cart = cartService.findByUserId(user);
+        Cart cart = cartService.getCart(firebaseId);
         if (cart != null) {
             cartService.clearCart(cart);
         }

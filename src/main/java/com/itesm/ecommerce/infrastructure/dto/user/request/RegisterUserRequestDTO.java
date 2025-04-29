@@ -13,8 +13,6 @@ public class RegisterUserRequestDTO {
     public User toDomain(){
         User user = new User();
         user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
         return user;
     }
 }

@@ -11,48 +11,52 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class CartService {
 
-    @Inject UserRepository userRepository;
     @Inject CartRepository cartRepository;
     @Inject CartHasProductRepository cartHasProductRepository;
 
-    public Cart findByUserId(User user){
-        return cartRepository.findByUserId(user.getId());
+    @Transactional
+    public Cart createCart(String firebaseId) {
+        String cartUuid = UUID.randomUUID().toString();
+        return cartRepository.createCart(firebaseId, cartUuid);
+    }
+
+    public Cart getCart(String firebaseId) {
+        Cart cart = cartRepository.findUserCart(firebaseId);
+        if(cart == null) {
+            return createCart(firebaseId);
+        }
+        return cart;
     }
 
     @Transactional
     public void addProductToCart(ProductCartDto dto, String firebaseId) {
-
-        User user = userRepository.getUserByFirebaseId(firebaseId);
-        Cart cart = cartRepository.findByUserId(user.getId());
-        if(cart == null){
-            cartRepository.createCart(user.getFirebaseId());
-            cart = cartRepository.findByUserId(user.getId());
-        }
+        Cart cart = getCart(firebaseId);
         cartHasProductRepository.addProductToCart(cart.getId(),dto.getIdProduct(), dto.getQuantity());
-
     }
 
     @Transactional
     public void removeProductFromCart(String firebaseId, int productId, int quantity) {
-        User user = userRepository.getUserByFirebaseId(firebaseId);
-        Cart cart = cartRepository.findByUserId(user.getId());
-
-        if (cart != null) {
-            cartHasProductRepository.removeProductFromCart(cart.getId(), productId, quantity);
-        }
+//        User user = userRepository.getUserByFirebaseId(firebaseId);
+//        Cart cart = cartRepository.findByUserId(user.getId());
+//
+//        if (cart != null) {
+//            cartHasProductRepository.removeProductFromCart(cart.getId(), productId, quantity);
+//        }
     }
 
     @Transactional
     public void updateProductInCart(ProductCartDto dto, String firebaseId) {
-        User user = userRepository.getUserByFirebaseId(firebaseId);
-        Cart cart = cartRepository.findByUserId(user.getId());
-
-        if (cart != null) {
-            cartHasProductRepository.updateProductQuantity(cart.getId(), dto.getIdProduct(), dto.getQuantity());
-        }
+//        User user = userRepository.getUserByFirebaseId(firebaseId);
+//        Cart cart = cartRepository.findByUserId(user.getId());
+//
+//        if (cart != null) {
+//            cartHasProductRepository.updateProductQuantity(cart.getId(), dto.getIdProduct(), dto.getQuantity());
+//        }
     }
 
     public float calcuateSubtotal(Cart cart){
@@ -73,12 +77,12 @@ public class CartService {
 
     @Transactional
     public void chekoutCart(String firebaseId) {
-        User user = userRepository.getUserByFirebaseId(firebaseId);
-        Cart cart = cartRepository.findByUserId(user.getId());
-
-        if (cart != null) {
-            cartRepository.changeStatus(cart.getId(), "paid");
-        }
+//        User user = userRepository.getUserByFirebaseId(firebaseId);
+//        Cart cart = cartRepository.findByUserId(user.getId());
+//
+//        if (cart != null) {
+//            cartRepository.changeStatus(cart.getId(), "paid");
+//        }
     }
 
     public void clearCart(Cart cart) {

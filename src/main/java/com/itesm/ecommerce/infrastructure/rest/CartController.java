@@ -2,8 +2,6 @@ package com.itesm.ecommerce.infrastructure.rest;
 
 import com.itesm.ecommerce.application.service.CartService;
 import com.itesm.ecommerce.application.usecase.cart.*;
-import com.itesm.ecommerce.domain.model.Cart;
-import com.itesm.ecommerce.infrastructure.dto.cart.CartSummaryDTO;
 import com.itesm.ecommerce.infrastructure.dto.cart.ProductCartDto;
 import com.itesm.ecommerce.lib.UserContext;
 import jakarta.inject.Inject;
@@ -17,7 +15,7 @@ import java.util.Map;
 public class CartController {
 
     @Inject AddProductToCartUseCase addProductToCartUseCase;
-    @Inject FindCartUseCase findCartUseCase;
+    @Inject GetCartUseCase getCartUseCase;
     @Inject RemoveProductFromCartUseCase removeProductFromCartUseCase;
     @Inject CartService cartService;
     @Inject CheckoutCartUseCase checkoutCartUseCase;
@@ -39,12 +37,11 @@ public class CartController {
 
     @GET
     public Response getCart() {
-        Cart cart = findCartUseCase.execute(userContext.getFirebaseId());
-        CartSummaryDTO summary = new CartSummaryDTO();
-        summary.setSubtotal(cartService.calcuateSubtotal(cart));
-        summary.setTotal(cartService.calculateTotal(cart));
-        summary.setProducts(cart.getProductsInCart());
-        return Response.ok().entity(summary).build();
+//        CartSummaryDTO summary = new CartSummaryDTO();
+//        summary.setSubtotal(cartService.calcuateSubtotal(cart));
+//        summary.setTotal(cartService.calculateTotal(cart));
+//        summary.setProducts(cart.getProductsInCart());
+        return Response.ok().entity(getCartUseCase.execute(userContext.getFirebaseId())).build();
     }
 
     @DELETE

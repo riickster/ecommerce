@@ -16,8 +16,9 @@ import java.util.List;
 
 @ApplicationScoped
 public class ProductRepositoryImpl implements ProductRepository, PanacheRepositoryBase<ProductEntity,Integer> {
-    @Inject
-    CategoryRepositoryImpl categoryRepository;
+
+    @Inject CategoryRepositoryImpl categoryRepository;
+
     @Override
     @Transactional
     public Product insertProduct(Product product) {

@@ -1,6 +1,7 @@
 package com.itesm.ecommerce.infrastructure.entity;
 
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Table(name = "cart_has_products")
 @Getter
 @Setter
-public class CartHasProductsEntity {
+public class CartHasProductsEntity extends PanacheEntityBase {
 
     @Id
     @ManyToOne

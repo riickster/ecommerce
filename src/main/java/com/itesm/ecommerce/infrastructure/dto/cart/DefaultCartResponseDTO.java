@@ -11,8 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartSummaryDTO {
+public class DefaultCartResponseDTO {
+    private String uuid;
+    private String status;
+    private List<CartHasProduct> products;
     private float subtotal;
     private float total;
-    private List<CartHasProduct> products;
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 public class Cart {
     private int id;
+    private String uuid;
     private List<CartHasProduct> productsInCart;
     private User user;
     private String status;

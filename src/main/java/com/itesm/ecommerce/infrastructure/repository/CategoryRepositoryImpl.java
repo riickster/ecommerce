@@ -11,6 +11,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class CategoryRepositoryImpl implements CategoryRepository, PanacheRepositoryBase<CategoryEntity,Integer> {
 
+
+
     @Override
     public Category insertCategory(Category category) {
         CategoryEntity categoryEntity= CategoryMapper.toEntity(category);

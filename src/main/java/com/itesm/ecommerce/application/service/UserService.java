@@ -12,6 +12,7 @@ public class UserService {
     @Inject UserRepository userRepository;
 
     public User getUser(String firebaseId){
-        return userRepository.getUserByFirebaseId(firebaseId);
+        return userRepository.findByFirebaseId(firebaseId);
     }
+    public User findByFirebaseId(String firebaseId){ return userRepository.findByFirebaseId(firebaseId); }
 }

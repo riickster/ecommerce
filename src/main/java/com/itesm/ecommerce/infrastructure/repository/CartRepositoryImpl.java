@@ -3,7 +3,9 @@ package com.itesm.ecommerce.infrastructure.repository;
 import com.itesm.ecommerce.domain.model.Cart;
 
 import com.itesm.ecommerce.domain.repository.CartRepository;
+import com.itesm.ecommerce.domain.repository.UserRepository;
 import com.itesm.ecommerce.infrastructure.entity.CartEntity;
+import com.itesm.ecommerce.infrastructure.entity.UserEntity;
 import com.itesm.ecommerce.infrastructure.mapper.CartMapper;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -13,14 +15,18 @@ import jakarta.inject.Inject;
 public class CartRepositoryImpl implements CartRepository, PanacheRepositoryBase<CartEntity, Integer> {
 
     @Inject
-    UserRepositoryImpl userRepository;
+    UserRepository userRepository;
 
     @Override
-    public void createCart(String userId) {
-        CartEntity cart = new CartEntity();
-        cart.setUser(userRepository.getUserEntityByFirebaseId(userId));
-        cart.setStatus("active");
-        persist(cart);
+    public Cart createCart(String firebaseId, String cartUuid) {
+        UserEntity userEntity = userRepository.findEntityByFirebaseId(firebaseId);
+
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setUuid(cartUuid);
+        cartEntity.setUser(userEntity);
+        cartEntity.setStatus("ACTIVE");
+        cartEntity.persist();
+        return CartMapper.toDomain(cartEntity);
     }
 
     @Override
@@ -37,15 +43,15 @@ public class CartRepositoryImpl implements CartRepository, PanacheRepositoryBase
     }
 
     @Override
-    public Cart findByUserId(int id) {
-        CartEntity cart = find("user.id", id).firstResult();
+    public Cart findUserCart(String firebaseId) {
+        CartEntity cart = find("user.firebaseId", firebaseId).firstResult();
         if (cart == null) {
             return null;
         }
         return CartMapper.toDomain(cart);
     }
 
-    public CartEntity getCartById(int cartId) {
+    public CartEntity findCartById(int cartId) {
         return findById(cartId);
     }
 
